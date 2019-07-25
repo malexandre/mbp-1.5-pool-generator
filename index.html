@@ -797,6 +797,10 @@
         return units[type].filter((u) => boxes.includes(u.box) && (includeIgnoredUnits || u.ignored === false));
       }
 
+      function filter5CostUnits(units, already2Cost5Units) {
+        return units.filter((u) => !already2Cost5Units || u.cost < 5);
+      }
+
       function createCardFragment(htmlStr) {
         const div = document.createElement("div");
         div.className = "mb-3 mr-3 ml-3 pool-cards";
@@ -836,40 +840,44 @@
 
         for (var idx = 0; idx < tableCount; idx++) {
           const data = [[], [], [], []];
-          let cost5Units = 0;
+          let cost5UnitCount = 0;
 
           for (var jdx = 0; jdx < (document.getElementById("godCount").value || 4) && gods.length; jdx++) {
             data[0].push(selectAndRemoveUnit(gods));
           }
 
-          for (var jdx = 0; jdx < (document.getElementById("heroCount").value || 5) && heroes.length; jdx++) {
-            const hero = selectAndRemoveUnit(heroes, cost5Units >= 2);
+          for (
+            var jdx = 0;
+            jdx < (document.getElementById("heroCount").value || 5) &&
+            filter5CostUnits(heroes, cost5UnitCount >= 2).length;
+            jdx++
+          ) {
+            const hero = selectAndRemoveUnit(heroes, cost5UnitCount >= 2);
 
             if (hero.cost >= 5) {
-              cost5Units++;
+              cost5UnitCount++;
             }
 
             data[1].push(hero);
           }
 
-          for (var jdx = 0; jdx < (document.getElementById("monsterCount").value || 5) && monsters.length; jdx++) {
-            const monster = selectAndRemoveUnit(monsters, cost5Units >= 2);
+          for (
+            var jdx = 0;
+            jdx < (document.getElementById("monsterCount").value || 5) &&
+            filter5CostUnits(monsters, cost5UnitCount >= 2).length;
+            jdx++
+          ) {
+            const monster = selectAndRemoveUnit(monsters, cost5UnitCount >= 2);
 
             if (monster.cost >= 5) {
-              cost5Units++;
+              cost5UnitCount++;
             }
 
             data[2].push(monster);
           }
 
           for (var jdx = 0; jdx < (document.getElementById("troopCount").value || 5) && troops.length; jdx++) {
-            const troop = selectAndRemoveUnit(troops, cost5Units >= 2);
-
-            if (troop.cost >= 5) {
-              cost5Units++;
-            }
-
-            data[3].push(troop);
+            data[3].push(selectAndRemoveUnit(troops));
           }
 
           setTimeout(() => displayPool(data), 0);
