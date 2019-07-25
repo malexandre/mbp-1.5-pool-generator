@@ -28,6 +28,72 @@
       .pool-cards {
         width: 250px;
       }
+
+      .box-cor {
+        background-color: #f8f9fa;
+        color: sienna;
+      }
+
+      .box-cor {
+        background-color: #f8f9fa;
+        color: sienna;
+      }
+
+      .box-pan {
+        background-color: sienna;
+        color: #f8f9fa;
+      }
+
+      .box-her {
+        background-color: green;
+        color: #f8f9fa;
+      }
+
+      .box-hep {
+        background-color: darkred;
+        color: gold;
+      }
+
+      .box-pos {
+        background-color: navy;
+        color: #f8f9fa;
+      }
+
+      .box-ris {
+        background-color: rgba(176, 196, 222, 0.15);
+        color: navy;
+      }
+
+      .box-jud {
+        background-color: gold;
+        color: darkred;
+      }
+
+      .box-ech {
+        background-color: rgba(154, 205, 50, 0.2);
+        color: green;
+      }
+
+      .box-tro {
+        background-color: silver;
+        color: #333;
+      }
+
+      .box-oed {
+        background-color: #333;
+        color: #f8f9fa;
+      }
+
+      .box-man {
+        background-color: darkolivegreen;
+        color: #f8f9fa;
+      }
+
+      .box-dio,
+      .box-ymi {
+        background-color: #f8f9fa;
+        color: #333;
+      }
     </style>
     <script type="text/javascript">
       const units = {
@@ -69,6 +135,24 @@
             ignored: true
           },
           {
+            name: "Dionysos",
+            box: "DIO",
+            cost: 6,
+            ignored: false
+          },
+          {
+            name: "Encelade",
+            box: "RIS",
+            cost: 8,
+            ignored: true
+          },
+          {
+            name: "Gaia",
+            box: "RIS",
+            cost: 8,
+            ignored: true
+          },
+          {
             name: "Hades",
             box: "COR",
             cost: 6,
@@ -87,6 +171,12 @@
             ignored: false
           },
           {
+            name: "Hephaistos",
+            box: "HEP",
+            cost: 6,
+            ignored: false
+          },
+          {
             name: "Hera",
             box: "HER",
             cost: 4,
@@ -97,6 +187,12 @@
             box: "PAN",
             cost: 6,
             ignored: false
+          },
+          {
+            name: "Kronos",
+            box: "RIS",
+            cost: 8,
+            ignored: true
           },
           {
             name: "Pan",
@@ -111,6 +207,24 @@
             ignored: false
           },
           {
+            name: "Poseidon",
+            box: "POS",
+            cost: 6,
+            ignored: false
+          },
+          {
+            name: "Typhon",
+            box: "RIS",
+            cost: 10,
+            ignored: true
+          },
+          {
+            name: "Ymir",
+            box: "YMI",
+            cost: 8,
+            ignored: true
+          },
+          {
             name: "Zeus",
             box: "COR",
             cost: 6,
@@ -119,8 +233,26 @@
         ],
         monsters: [
           {
+            name: "Acamas",
+            box: "HEP",
+            cost: 4,
+            ignored: false
+          },
+          {
+            name: "Aigle du Caucase",
+            box: "HEP",
+            cost: 2,
+            ignored: false
+          },
+          {
             name: "Arachne",
             box: "PAN",
+            cost: 3,
+            ignored: false
+          },
+          {
+            name: "Basilic",
+            box: "ECH",
             cost: 3,
             ignored: false
           },
@@ -133,6 +265,18 @@
           {
             name: "Cerbere",
             box: "COR",
+            cost: 4,
+            ignored: false
+          },
+          {
+            name: "Charybde",
+            box: "POS",
+            cost: 5,
+            ignored: false
+          },
+          {
+            name: "Chimere",
+            box: "ECH",
             cost: 4,
             ignored: false
           },
@@ -197,6 +341,12 @@
             ignored: false
           },
           {
+            name: "Manticore",
+            box: "MAN",
+            cost: 5,
+            ignored: false
+          },
+          {
             name: "Meduse",
             box: "COR",
             cost: 3,
@@ -227,8 +377,26 @@
             ignored: false
           },
           {
+            name: "Polypheme",
+            box: "POS",
+            cost: 5,
+            ignored: false
+          },
+          {
+            name: "Promethee",
+            box: "HEP",
+            cost: 5,
+            ignored: false
+          },
+          {
             name: "Python",
             box: "PAN",
+            cost: 3,
+            ignored: false
+          },
+          {
+            name: "Renard de Telimesse",
+            box: "ECH",
             cost: 3,
             ignored: false
           },
@@ -239,8 +407,32 @@
             ignored: false
           },
           {
+            name: "Scylla",
+            box: "POS",
+            cost: 5,
+            ignored: false
+          },
+          {
+            name: "Sphinx",
+            box: "OED",
+            cost: 3,
+            ignored: false
+          },
+          {
             name: "Stheno la Gorgone",
             box: "PAN",
+            cost: 3,
+            ignored: false
+          },
+          {
+            name: "Talos",
+            box: "HEP",
+            cost: 5,
+            ignored: false
+          },
+          {
+            name: "Taureau de Colchide",
+            box: "HEP",
             cost: 3,
             ignored: false
           },
@@ -274,6 +466,18 @@
             name: "Ajax",
             box: "TRO",
             cost: 4,
+            ignored: false
+          },
+          {
+            name: "Andromede",
+            box: "POS",
+            cost: 1,
+            ignored: false
+          },
+          {
+            name: "Antee",
+            box: "POS",
+            cost: 3,
             ignored: false
           },
           {
@@ -409,9 +613,21 @@
             ignored: false
           },
           {
+            name: "Oedipe",
+            box: "OED",
+            cost: 2,
+            ignored: false
+          },
+          {
             name: "Orphee",
             box: "PAN",
             cost: 2,
+            ignored: false
+          },
+          {
+            name: "Pandore",
+            box: "HEP",
+            cost: 1,
             ignored: false
           },
           {
@@ -424,6 +640,12 @@
             name: "Penthesilee",
             box: "TRO",
             cost: 3,
+            ignored: false
+          },
+          {
+            name: "Periphetes",
+            box: "POS",
+            cost: 2,
             ignored: false
           },
           {
@@ -442,6 +664,12 @@
             name: "Sisyphe",
             box: "PAN",
             cost: 1,
+            ignored: false
+          },
+          {
+            name: "Thesee",
+            box: "POS",
+            cost: 4,
             ignored: false
           },
           {
@@ -483,8 +711,26 @@
             ignored: false
           },
           {
+            name: "Golems de Lave",
+            box: "HEP",
+            cost: 1,
+            ignored: false
+          },
+          {
             name: "Guerriers des Enfers",
             box: "COR",
+            cost: 1,
+            ignored: false
+          },
+          {
+            name: "Guerriers Mécaniques",
+            box: "HEP",
+            cost: 1,
+            ignored: false
+          },
+          {
+            name: "Harpies",
+            box: "POS",
             cost: 1,
             ignored: false
           },
@@ -503,6 +749,12 @@
           {
             name: "Oiseaux de Stymphale",
             box: "HER",
+            cost: 1,
+            ignored: false
+          },
+          {
+            name: "Sirènes",
+            box: "POS",
             cost: 1,
             ignored: false
           },
@@ -536,20 +788,10 @@
       function filterUnits(type, includeIgnoredUnits) {
         const boxes = [];
 
-        if (document.getElementById("core").checked) {
-          boxes.push("COR");
+        for (const checkbox of document.getElementsByClassName("boxes-checkbox")) {
+          if (checkbox.checked) {
+            boxes.push(checkbox.value);
         }
-        if (document.getElementById("pandora").checked) {
-          boxes.push("PAN");
-        }
-        if (document.getElementById("hera").checked) {
-          boxes.push("HER");
-        }
-        if (document.getElementById("judges").checked) {
-          boxes.push("JUD");
-        }
-        if (document.getElementById("trojan").checked) {
-          boxes.push("TRO");
         }
 
         return units[type].filter((u) => boxes.includes(u.box) && (includeIgnoredUnits || u.ignored === false));
@@ -563,28 +805,8 @@
       }
 
       function displayUnit(unit) {
-        let color;
-
-        switch (unit.box) {
-          case "PAN":
-            color = "sienna";
-            break;
-
-          case "HER":
-            color = "green";
-            break;
-
-          case "JUD":
-            color = "gold";
-            break;
-
-          case "TRO":
-            color = "darkgrey";
-            break;
+        return `<span class="badge badge-light box-${unit.box.toLowerCase()}">${unit.box}</span> ${unit.name}`;
         }
-
-        return `<span class="badge badge-light" style="background-color: ${color};">${unit.box}</span> ${unit.name}`;
-      }
 
       function displayUnitType(units) {
         return `<div class="row"><div class="col-sm">${units
@@ -669,24 +891,62 @@
           <h3 class="mt-4 mb-3 text-center">Choisissez vos boîtes :</h3>
           <div class="d-flex flex-column align-items-center">
             <div class="form-check form-check-inline boxes">
-              <input class="form-check-input" type="checkbox" id="core" value="COR" checked />
+              <input class="form-check-input boxes-checkbox" type="checkbox" id="core" value="COR" checked />
               <label class="form-check-label" for="core">Core</label>
             </div>
             <div class="form-check form-check-inline boxes">
-              <input class="form-check-input" type="checkbox" id="pandora" value="PAN" checked />
+              <input class="form-check-input boxes-checkbox" type="checkbox" id="pandora" value="PAN" checked />
               <label class="form-check-label" for="pandora">Pandora</label>
             </div>
             <div class="form-check form-check-inline boxes">
-              <input class="form-check-input" type="checkbox" id="hera" value="HER" checked />
+              <input class="form-check-input boxes-checkbox" type="checkbox" id="hera" value="HER" checked />
               <label class="form-check-label" for="hera">Hera</label>
             </div>
             <div class="form-check form-check-inline boxes">
-              <input class="form-check-input" type="checkbox" id="judges" value="JUD" checked />
+              <input class="form-check-input boxes-checkbox" type="checkbox" id="hephaistos" value="HEP" checked />
+              <label class="form-check-label" for="hephaistos">Hephaistos</label>
+            </div>
+            <div class="form-check form-check-inline boxes">
+              <input class="form-check-input boxes-checkbox" type="checkbox" id="poseidon" value="POS" checked />
+              <label class="form-check-label" for="poseidon">Poseidon</label>
+            </div>
+            <div class="form-check form-check-inline boxes">
+              <input
+                class="form-check-input boxes-checkbox"
+                type="checkbox"
+                id="rise-of-the-titans"
+                value="RIS"
+                checked
+              />
+              <label class="form-check-label" for="rise-of-the-titans">Rise of the Titans</label>
+            </div>
+            <div class="form-check form-check-inline boxes">
+              <input class="form-check-input boxes-checkbox" type="checkbox" id="judges" value="JUD" checked />
               <label class="form-check-label" for="judges">Judges of the Unnderworld</label>
             </div>
             <div class="form-check form-check-inline boxes">
-              <input class="form-check-input" type="checkbox" id="trojan" value="TRO" checked />
+              <input class="form-check-input boxes-checkbox" type="checkbox" id="echnida" value="ECH" checked />
+              <label class="form-check-label" for="echnida">Echnida's Children</label>
+            </div>
+            <div class="form-check form-check-inline boxes">
+              <input class="form-check-input boxes-checkbox" type="checkbox" id="trojan" value="TRO" checked />
               <label class="form-check-label" for="trojan">Heroes of the Trojan Wars</label>
+            </div>
+            <div class="form-check form-check-inline boxes">
+              <input class="form-check-input boxes-checkbox" type="checkbox" id="oedipus" value="OED" checked />
+              <label class="form-check-label" for="oedipus">Oedipus vs The Sphinx</label>
+            </div>
+            <div class="form-check form-check-inline boxes">
+              <input class="form-check-input boxes-checkbox" type="checkbox" id="manticore" value="MAN" checked />
+              <label class="form-check-label" for="manticore">The Manticore</label>
+          </div>
+            <div class="form-check form-check-inline boxes">
+              <input class="form-check-input boxes-checkbox" type="checkbox" id="dionysus" value="DIO" checked />
+              <label class="form-check-label" for="dionysus">Dionysus</label>
+        </div>
+            <div class="form-check form-check-inline boxes">
+              <input class="form-check-input boxes-checkbox" type="checkbox" id="ymir" value="YMI" checked />
+              <label class="form-check-label" for="ymir">Ymir</label>
             </div>
           </div>
         </div>
