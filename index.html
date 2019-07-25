@@ -29,6 +29,10 @@
         width: 250px;
       }
 
+      .badge {
+        width: 40px;
+      }
+
       .box-cor {
         background-color: #f8f9fa;
         color: sienna;
@@ -791,7 +795,7 @@
         for (const checkbox of document.getElementsByClassName("boxes-checkbox")) {
           if (checkbox.checked) {
             boxes.push(checkbox.value);
-        }
+          }
         }
 
         return units[type].filter((u) => boxes.includes(u.box) && (includeIgnoredUnits || u.ignored === false));
@@ -810,7 +814,7 @@
 
       function displayUnit(unit) {
         return `<span class="badge badge-light box-${unit.box.toLowerCase()}">${unit.box}</span> ${unit.name}`;
-        }
+      }
 
       function displayUnitType(units) {
         return `<div class="row"><div class="col-sm">${units
@@ -947,11 +951,11 @@
             <div class="form-check form-check-inline boxes">
               <input class="form-check-input boxes-checkbox" type="checkbox" id="manticore" value="MAN" checked />
               <label class="form-check-label" for="manticore">The Manticore</label>
-          </div>
+            </div>
             <div class="form-check form-check-inline boxes">
               <input class="form-check-input boxes-checkbox" type="checkbox" id="dionysus" value="DIO" checked />
               <label class="form-check-label" for="dionysus">Dionysus</label>
-        </div>
+            </div>
             <div class="form-check form-check-inline boxes">
               <input class="form-check-input boxes-checkbox" type="checkbox" id="ymir" value="YMI" checked />
               <label class="form-check-label" for="ymir">Ymir</label>
@@ -982,21 +986,25 @@
           <div class="d-flex flex-column align-items-center">
             <div class="form-group row mb-1">
               <label for="godCount" class="col-sm-8 col-form-label text-right unit-counts">Divinités/Gods</label>
+              <div class="col-sm-4 d-flex justify-content-center align-items-center">
                 <input type="number" class="form-control number-input" id="godCount" value="4" min="2" />
               </div>
             </div>
             <div class="form-group row mb-1">
               <label for="heroCount" class="col-sm-8 col-form-label text-right unit-counts">Héros/Heroes</label>
+              <div class="col-sm-4 d-flex justify-content-center align-items-center">
                 <input type="number" class="form-control number-input" id="heroCount" value="5" min="0" />
               </div>
             </div>
             <div class="form-group row mb-1">
               <label for="monsterCount" class="col-sm-8 col-form-label text-right unit-counts">Monstres/Monsters</label>
+              <div class="col-sm-4 d-flex justify-content-center align-items-center">
                 <input type="number" class="form-control number-input" id="monsterCount" value="5" min="0" />
               </div>
             </div>
             <div class="form-group row mb-1">
               <label for="troopCount" class="col-sm-8 col-form-label text-right unit-counts">Troupes/Troops</label>
+              <div class="col-sm-4 d-flex justify-content-center align-items-center">
                 <input type="number" class="form-control number-input" id="troopCount" value="5" min="0" />
               </div>
             </div>
