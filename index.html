@@ -812,14 +812,12 @@
         return div;
       }
 
-      function displayUnit(unit) {
-        return `<span class="badge badge-light box-${unit.box.toLowerCase()}">${unit.box}</span> ${unit.name}`;
-      }
-
       function displayUnitType(units) {
         return `<div class="row"><div class="col-sm">${units
           .sort((a, b) => (a.name > b.name ? 1 : -1))
-          .map(displayUnit)
+          .map(
+            (unit) => `<span class="badge badge-light box-${unit.box.toLowerCase()}">${unit.box}</span> ${unit.name}`
+          )
           .join("<br .>")}</div></div>`;
       }
 
@@ -833,29 +831,50 @@
           );
       }
 
-      function pickPools() {
-        document.getElementById("pools").innerHTML = "";
-        const tableCount = document.querySelector('input[name="tableCount"]:checked').value;
+      function getAndSaveFormContent() {
+        var values = {
+          tableCount: document.filters["tableCount"].value,
+          godCount: document.filters["godCount"].value,
+          heroCount: document.filters["heroCount"].value,
+          monsterCount: document.filters["monsterCount"].value,
+          troopCount: document.filters["troopCount"].value,
+          titans: document.filters["titans"].checked,
+          veterans: document.filters["veterans"].checked
+        };
 
-        const gods = [...filterUnits("gods", document.getElementById("titans").checked)];
-        const heroes = [...filterUnits("heroes", document.getElementById("veterans").checked)];
+        for (const checkbox of document.getElementsByClassName("boxes-checkbox")) {
+          values[checkbox.id] = checkbox.checked;
+        }
+
+        localStorage.setItem("filtersData", JSON.stringify(values));
+        return values;
+      }
+
+      function pickPools() {
+        let formData;
+        try {
+          formData = getAndSaveFormContent();
+        } catch (e) {
+          console.log(e);
+          return false;
+        }
+
+        document.getElementById("pools").innerHTML = "";
+
+        const gods = [...filterUnits("gods", formData.titans)];
+        const heroes = [...filterUnits("heroes", formData.veterans)];
         const monsters = [...filterUnits("monsters")];
         const troops = [...filterUnits("troops")];
 
-        for (var idx = 0; idx < tableCount; idx++) {
+        for (var idx = 0; idx < formData.tableCount; idx++) {
           const data = [[], [], [], []];
           let cost5UnitCount = 0;
 
-          for (var jdx = 0; jdx < (document.getElementById("godCount").value || 4) && gods.length; jdx++) {
+          for (var jdx = 0; jdx < formData.godCount && gods.length; jdx++) {
             data[0].push(selectAndRemoveUnit(gods));
           }
 
-          for (
-            var jdx = 0;
-            jdx < (document.getElementById("heroCount").value || 5) &&
-            filter5CostUnits(heroes, cost5UnitCount >= 2).length;
-            jdx++
-          ) {
+          for (var jdx = 0; jdx < formData.heroCount && filter5CostUnits(heroes, cost5UnitCount >= 2).length; jdx++) {
             const hero = selectAndRemoveUnit(heroes, cost5UnitCount >= 2);
 
             if (hero.cost >= 5) {
@@ -867,8 +886,7 @@
 
           for (
             var jdx = 0;
-            jdx < (document.getElementById("monsterCount").value || 5) &&
-            filter5CostUnits(monsters, cost5UnitCount >= 2).length;
+            jdx < formData.monsterCount && filter5CostUnits(monsters, cost5UnitCount >= 2).length;
             jdx++
           ) {
             const monster = selectAndRemoveUnit(monsters, cost5UnitCount >= 2);
@@ -880,7 +898,7 @@
             data[2].push(monster);
           }
 
-          for (var jdx = 0; jdx < (document.getElementById("troopCount").value || 5) && troops.length; jdx++) {
+          for (var jdx = 0; jdx < formData.troopCount && troops.length; jdx++) {
             data[3].push(selectAndRemoveUnit(troops));
           }
 
@@ -890,6 +908,20 @@
         document.getElementById("results").classList.remove("d-none");
         return false;
       }
+
+      function loadFormContent() {
+        var filtersData = JSON.parse(localStorage.getItem("filtersData"));
+
+        for (const key of Object.keys(filtersData)) {
+          if (key.includes("Count")) {
+            document.filters[key].value = filtersData[key];
+          } else {
+            document.filters[key].checked = filtersData[key];
+          }
+        }
+      }
+
+      setTimeout(loadFormContent, 0);
     </script>
   </head>
   <body>
