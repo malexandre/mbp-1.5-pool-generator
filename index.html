@@ -941,6 +941,12 @@
         }
       }
 
+      function setAllBoxes(value) {
+        for (const checkbox of document.getElementsByClassName("boxes-checkbox")) {
+          checkbox.checked = value;
+        }
+      }
+
       setTimeout(loadFormContent, 0);
     </script>
   </head>
@@ -955,6 +961,16 @@
         <div class="row">
           <div class="col-md-4">
             <h3 class="mt-4 mb-3 text-center">Boîtes/Boxes :</h3>
+            <div class="mt-3 mb-3 text-center">
+              <button type="button" class="btn btn-light" onclick="setAllBoxes(true)">
+                Tout sélectionner/Select all
+              </button>
+            </div>
+            <div class="mt-3 mb-3 text-center">
+              <button type="button" class="btn btn-light" onclick="setAllBoxes(false)">
+                Tout déselectionner/Deselect all
+              </button>
+            </div>
             <div id="box-list" class="d-flex flex-column align-items-center">
               <div class="form-check form-check-inline boxes">
                 <input class="form-check-input boxes-checkbox" type="checkbox" id="core" value="COR" checked />
