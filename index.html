@@ -99,6 +99,13 @@
         background-color: #f8f9fa;
         color: #333;
       }
+
+      @media (min-width: 1024px) {
+        #box-list {
+          flex-wrap: wrap;
+          height: 170px;
+        }
+      }
     </style>
     <script type="text/javascript">
       const units = {
@@ -948,7 +955,7 @@
         <div class="row">
           <div class="col-md-4">
             <h3 class="mt-4 mb-3 text-center">Boîtes/Boxes :</h3>
-            <div class="d-flex flex-column align-items-center">
+            <div id="box-list" class="d-flex flex-column align-items-center">
               <div class="form-check form-check-inline boxes">
                 <input class="form-check-input boxes-checkbox" type="checkbox" id="core" value="COR" checked />
                 <label class="form-check-label" for="core">Core</label>
