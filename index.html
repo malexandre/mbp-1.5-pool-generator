@@ -16,17 +16,13 @@
         width: 210px;
       }
 
-      .unit-counts {
-        width: 200px;
-      }
-
       .number-input {
         width: 60px;
         text-align: center;
       }
 
       .pool-cards {
-        width: 250px;
+        width: 315px;
       }
 
       .badge {
@@ -95,7 +91,8 @@
 
       .box-dio,
       .box-ymi,
-      .box-cori {
+      .box-cori,
+      .box-the {
         background-color: #f8f9fa;
         color: #333;
       }
@@ -103,7 +100,7 @@
       @media (min-width: 1024px) {
         #box-list {
           flex-wrap: wrap;
-          height: 170px;
+          height: 192px;
         }
       }
     </style>
@@ -791,6 +788,81 @@
         ]
       };
 
+      const maps = [
+        {
+          name: "Tartare",
+          box: "COR",
+          set: "COR1",
+          water: false
+        },
+        {
+          name: "Olympe en ruines",
+          box: "COR",
+          set: "COR1",
+          water: false
+        },
+        {
+          name: "Labyrinthe de Minos",
+          box: "COR",
+          set: "COR2",
+          water: false
+        },
+        {
+          name: "Styx",
+          box: "COR",
+          set: "COR2",
+          water: false
+        },
+        {
+          name: "Forge",
+          box: "HEP",
+          set: "HEP",
+          water: false
+        },
+        {
+          name: "Volcan",
+          box: "HEP",
+          set: "HEP",
+          water: false
+        },
+        {
+          name: "Jardin des Hespérides",
+          box: "HER",
+          set: "HER",
+          water: false
+        },
+        {
+          name: "Marais de Lerne",
+          box: "HER",
+          set: "HER",
+          water: false
+        },
+        {
+          name: "Mer Egée",
+          box: "POS",
+          set: "POS",
+          water: true
+        },
+        {
+          name: "Ile de Polyphème",
+          box: "POS",
+          set: "POS",
+          water: false
+        },
+        {
+          name: "En pleine mer Egée",
+          box: "THE",
+          set: "THE",
+          water: true
+        },
+        {
+          name: "Thermopyles",
+          box: "THE",
+          set: "THE",
+          water: false
+        }
+      ];
+
       function selectAndRemoveUnit(units, avoid5costs) {
         const idx = Math.floor(Math.random() * units.length);
         const unit = units[idx];
@@ -803,7 +875,24 @@
         return unit;
       }
 
-      function filterUnits(type, includeIgnoredUnits) {
+      function selectAndRemoveMap(maps, duplicateMaps) {
+        const idx = Math.floor(Math.random() * maps.length);
+        const map = maps[idx];
+        maps.splice(idx, 1);
+
+        if (!duplicateMaps) {
+          for (let jdx = 0; jdx < maps.length; jdx++) {
+            if (maps[jdx].set === map.set) {
+              maps.splice(jdx, 1);
+              break;
+            }
+          }
+        }
+
+        return map;
+      }
+
+      function getBoxes() {
         const boxes = [];
 
         for (const checkbox of document.getElementsByClassName("boxes-checkbox")) {
@@ -812,6 +901,11 @@
           }
         }
 
+        return boxes;
+      }
+
+      function filterUnits(type, includeIgnoredUnits) {
+        const boxes = getBoxes();
         return units[type].filter((u) => boxes.includes(u.box) && (includeIgnoredUnits || u.ignored === false));
       }
 
@@ -819,11 +913,22 @@
         return units.filter((u) => !already2Cost5Units || u.cost < 5);
       }
 
+      function filterMaps(aegean) {
+        const boxes = getBoxes();
+        return maps.filter((m) => boxes.includes(m.box) && (aegean || m.water === false));
+      }
+
       function createCardFragment(htmlStr) {
         const div = document.createElement("div");
         div.className = "mb-3 mr-3 ml-3 pool-cards";
         div.innerHTML = htmlStr;
         return div;
+      }
+
+      function displayMap(map) {
+        return `<div class="row mb-4"><div class="col-sm"><span class="badge badge-light box-${map.box.toLowerCase()}">${
+          map.box
+        }</span> ${map.name} - Setup ${Math.random() > 0.5 ? "A" : "B"}</div></div>`;
       }
 
       function displayUnitType(units) {
@@ -835,12 +940,14 @@
           .join("<br .>")}</div></div>`;
       }
 
-      function displayPool(pool) {
+      function displayPool(map, pool) {
         document
           .getElementById("pools")
           .appendChild(
             createCardFragment(
-              `<div class="card"><div class="card-body">${pool.map(displayUnitType).join("<br />")}</div></div>`
+              `<div class="card"><div class="card-body">${displayMap(map)}${pool
+                .map(displayUnitType)
+                .join("<br />")}</div></div>`
             )
           );
       }
@@ -853,7 +960,9 @@
           monsterCount: document.filters["monsterCount"].value,
           troopCount: document.filters["troopCount"].value,
           titans: document.filters["titans"].checked,
-          veterans: document.filters["veterans"].checked
+          veterans: document.filters["veterans"].checked,
+          duplicateMaps: document.filters["duplicateMaps"].checked,
+          aegean: document.filters["aegean"].checked
         };
 
         for (const checkbox of document.getElementsByClassName("boxes-checkbox")) {
@@ -865,61 +974,62 @@
       }
 
       function pickPools() {
-        let formData;
         try {
-          formData = getAndSaveFormContent();
+          const formData = getAndSaveFormContent();
+
+          document.getElementById("pools").innerHTML = "";
+
+          const gods = [...filterUnits("gods", formData.titans)];
+          const heroes = [...filterUnits("heroes", formData.veterans)];
+          const monsters = [...filterUnits("monsters")];
+          const troops = [...filterUnits("troops")];
+          const maps = [...filterMaps(formData.aegean)];
+
+          for (var idx = 0; idx < formData.tableCount; idx++) {
+            const data = [[], [], [], []];
+            const map = selectAndRemoveMap(maps, formData.duplicateMaps);
+            let cost5UnitCount = 0;
+
+            for (var jdx = 0; jdx < formData.godCount && gods.length; jdx++) {
+              data[0].push(selectAndRemoveUnit(gods));
+            }
+
+            for (var jdx = 0; jdx < formData.heroCount && filter5CostUnits(heroes, cost5UnitCount >= 2).length; jdx++) {
+              const hero = selectAndRemoveUnit(heroes, cost5UnitCount >= 2);
+
+              if (hero.cost >= 5) {
+                cost5UnitCount++;
+              }
+
+              data[1].push(hero);
+            }
+
+            for (
+              var jdx = 0;
+              jdx < formData.monsterCount && filter5CostUnits(monsters, cost5UnitCount >= 2).length;
+              jdx++
+            ) {
+              const monster = selectAndRemoveUnit(monsters, cost5UnitCount >= 2);
+
+              if (monster.cost >= 5) {
+                cost5UnitCount++;
+              }
+
+              data[2].push(monster);
+            }
+
+            for (var jdx = 0; jdx < formData.troopCount && troops.length; jdx++) {
+              data[3].push(selectAndRemoveUnit(troops));
+            }
+
+            setTimeout(() => displayPool(map, data), 0);
+          }
+
+          document.getElementById("results").classList.remove("d-none");
         } catch (e) {
-          console.log(e);
-          return false;
+          console.error(e);
         }
 
-        document.getElementById("pools").innerHTML = "";
-
-        const gods = [...filterUnits("gods", formData.titans)];
-        const heroes = [...filterUnits("heroes", formData.veterans)];
-        const monsters = [...filterUnits("monsters")];
-        const troops = [...filterUnits("troops")];
-
-        for (var idx = 0; idx < formData.tableCount; idx++) {
-          const data = [[], [], [], []];
-          let cost5UnitCount = 0;
-
-          for (var jdx = 0; jdx < formData.godCount && gods.length; jdx++) {
-            data[0].push(selectAndRemoveUnit(gods));
-          }
-
-          for (var jdx = 0; jdx < formData.heroCount && filter5CostUnits(heroes, cost5UnitCount >= 2).length; jdx++) {
-            const hero = selectAndRemoveUnit(heroes, cost5UnitCount >= 2);
-
-            if (hero.cost >= 5) {
-              cost5UnitCount++;
-            }
-
-            data[1].push(hero);
-          }
-
-          for (
-            var jdx = 0;
-            jdx < formData.monsterCount && filter5CostUnits(monsters, cost5UnitCount >= 2).length;
-            jdx++
-          ) {
-            const monster = selectAndRemoveUnit(monsters, cost5UnitCount >= 2);
-
-            if (monster.cost >= 5) {
-              cost5UnitCount++;
-            }
-
-            data[2].push(monster);
-          }
-
-          for (var jdx = 0; jdx < formData.troopCount && troops.length; jdx++) {
-            data[3].push(selectAndRemoveUnit(troops));
-          }
-
-          setTimeout(() => displayPool(data), 0);
-        }
-
-        document.getElementById("results").classList.remove("d-none");
         return false;
       }
 
@@ -1028,6 +1138,10 @@
                 <input class="form-check-input boxes-checkbox" type="checkbox" id="ymir" value="YMI" checked />
                 <label class="form-check-label" for="ymir">Ymir</label>
               </div>
+              <div class="form-check form-check-inline boxes">
+                <input class="form-check-input boxes-checkbox" type="checkbox" id="thermopyles" value="THE" checked />
+                <label class="form-check-label" for="thermopyles">Thermopyles</label>
+              </div>
             </div>
           </div>
 
@@ -1051,44 +1165,52 @@
 
           <div class="col-md-4">
             <h3 class="mt-4 mb-3 text-center">Options :</h3>
-            <div class="d-flex flex-column align-items-center">
-              <div class="form-group row mb-1">
-                <label for="godCount" class="col-sm-8 col-form-label text-right unit-counts">Divinités/Gods</label>
-                <div class="col-sm-4 d-flex justify-content-center align-items-center">
-                  <input type="number" class="form-control number-input" id="godCount" value="4" min="2" />
-                </div>
+            <div class="form-group row mb-1">
+              <label for="godCount" class="col-7 col-form-label text-right">Divinités/Gods</label>
+              <div class="col-3 d-flex justify-content-center align-items-center">
+                <input type="number" class="form-control number-input" id="godCount" value="4" min="2" />
               </div>
-              <div class="form-group row mb-1">
-                <label for="heroCount" class="col-sm-8 col-form-label text-right unit-counts">Héros/Heroes</label>
-                <div class="col-sm-4 d-flex justify-content-center align-items-center">
-                  <input type="number" class="form-control number-input" id="heroCount" value="5" min="0" />
-                </div>
+            </div>
+            <div class="form-group row mb-1">
+              <label for="heroCount" class="col-7 col-form-label text-right">Héros/Heroes</label>
+              <div class="col-3 d-flex justify-content-center align-items-center">
+                <input type="number" class="form-control number-input" id="heroCount" value="5" min="0" />
               </div>
-              <div class="form-group row mb-1">
-                <label for="monsterCount" class="col-sm-8 col-form-label text-right unit-counts"
-                  >Monstres/Monsters</label
-                >
-                <div class="col-sm-4 d-flex justify-content-center align-items-center">
-                  <input type="number" class="form-control number-input" id="monsterCount" value="5" min="0" />
-                </div>
+            </div>
+            <div class="form-group row mb-1">
+              <label for="monsterCount" class="col-7 col-form-label text-right">Monstres/Monsters</label>
+              <div class="col-3 d-flex justify-content-center align-items-center">
+                <input type="number" class="form-control number-input" id="monsterCount" value="5" min="0" />
               </div>
-              <div class="form-group row mb-1">
-                <label for="troopCount" class="col-sm-8 col-form-label text-right unit-counts">Troupes/Troops</label>
-                <div class="col-sm-4 d-flex justify-content-center align-items-center">
-                  <input type="number" class="form-control number-input" id="troopCount" value="5" min="0" />
-                </div>
+            </div>
+            <div class="form-group row mb-1">
+              <label for="troopCount" class="col-7 col-form-label text-right">Troupes/Troops</label>
+              <div class="col-3 d-flex justify-content-center align-items-center">
+                <input type="number" class="form-control number-input" id="troopCount" value="5" min="0" />
               </div>
-              <div class="form-group row mb-1">
-                <label for="titans" class="col-sm-8 col-form-label text-right unit-counts">Titans</label>
-                <div class="col-sm-4 d-flex justify-content-center align-items-center">
-                  <input class="form-check form-check-inline" type="checkbox" id="titans" />
-                </div>
+            </div>
+            <div class="form-group row mb-1">
+              <label for="titans" class="col-7 col-form-label text-right">Titans</label>
+              <div class="col-3 d-flex justify-content-center align-items-center">
+                <input class="form-check form-check-inline" type="checkbox" id="titans" />
               </div>
-              <div class="form-group row mb-1">
-                <label for="veterans" class="col-sm-8 col-form-label text-right unit-counts">Vétérans/Veterans</label>
-                <div class="col-sm-4 d-flex justify-content-center align-items-center">
-                  <input class="form-check form-check-inline" type="checkbox" id="veterans" />
-                </div>
+            </div>
+            <div class="form-group row mb-1">
+              <label for="veterans" class="col-7 col-form-label text-right">Vétérans/Veterans</label>
+              <div class="col-3 d-flex justify-content-center align-items-center">
+                <input class="form-check form-check-inline" type="checkbox" id="veterans" />
+              </div>
+            </div>
+            <div class="form-group row mb-1">
+              <label for="duplicateMaps" class="col-7 col-form-label text-right">Cartes en double/Duplicate maps</label>
+              <div class="col-3 d-flex justify-content-center align-items-center">
+                <input class="form-check form-check-inline" type="checkbox" id="duplicateMaps" />
+              </div>
+            </div>
+            <div class="form-group row mb-1">
+              <label for="aegean" class="col-7 col-form-label text-right">Mer Égée/Aegean Sea</label>
+              <div class="col-3 d-flex justify-content-center align-items-center">
+                <input class="form-check form-check-inline" type="checkbox" id="aegean" />
               </div>
             </div>
           </div>
